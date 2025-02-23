@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamster Kombat</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  color: #f0f0f0;
+  position: relative;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #ffeaa7;
+}
+
+.coin {
+  font-size: 24px;
+  margin: 20px 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.coin-increment {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #55efc4;
+  opacity: 0;
+  animation: pop-up 0.7s ease forwards;
+}
+
+@keyframes pop-up {
+  0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  50% { transform: translateX(-50%) translateY(-20px); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-40px); opacity: 0; }
+}
+
+button {
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 12px;
+  border: none;
+  transition: all 0.2s ease;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.click-button {
+  background: linear-gradient(145deg, #ff7675, #d63031);
+  color: white;
+}
+
+.click-button:hover {
+  transform: scale(1.05);
+}
+
+.upgrade-button {
+  background: linear-gradient(145deg, #55efc4, #00b894);
+  color: white;
+}
+
+.upgrade-button:hover {
+  transform: scale(1.05);
+}
+
+.upgrade {
+  margin-top: 25px;
+}
+
+.coin-per-click {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #ffeaa7;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐹 Hamster Kombat</h1>
+    <div class="coin">
+      💰 Coins: <span id="coins">0</span>
+      <div id="coinIncrement" class="coin-increment">+<span id="incrementAmount">0</span></div>
+    </div>
+    <button class="click-button" onclick="addCoin()">👆 Tap to Earn Coins</button><div class="upgrade">
+  <h3>🚀 Upgrades</h3>
+  <button class="upgrade-button" onclick="buyUpgrade()">Increase Coin per Click (Cost: <span id="upgradeCost">10</span>)</button>
+  <p class="coin-per-click">🔔 Coin per Click: <span id="coinPerClick">1</span></p>
+</div>
+
+  </div>  <script>
+    let coins = 0;
+    let coinPerClick = 1;
+    let upgradeCost = 10;
+
+    const coinsDisplay = document.getElementById('coins');
+    const coinPerClickDisplay = document.getElementById('coinPerClick');
+    const upgradeCostDisplay = document.getElementById('upgradeCost');
+    const coinIncrement = document.getElementById('coinIncrement');
+    const incrementAmount = document.getElementById('incrementAmount');
+
+    function updateDisplay() {
+      coinsDisplay.innerText = coins;
+      coinPerClickDisplay.innerText = coinPerClick;
+      upgradeCostDisplay.innerText = upgradeCost;
+    }
+
+    function showIncrement(amount) {
+      incrementAmount.innerText = `+${amount}`;
+      coinIncrement.style.animation = 'none';
+      void coinIncrement.offsetWidth; // Restart animation
+      coinIncrement.style.animation = 'pop-up 0.7s ease forwards';
+    }
+
+    function addCoin() {
+      coins += coinPerClick;
+      updateDisplay();
+      showIncrement(coinPerClick);
+    }
+
+    function buyUpgrade() {
+      if (coins >= upgradeCost) {
+        coins -= upgradeCost;
+        coinPerClick++;
+        upgradeCost = Math.floor(upgradeCost * 1.5);
+        updateDisplay();
+      } else {
+        alert('🚫 Not enough coins!');
+      }
+    }
+
+    updateDisplay();
+  </script></body>
+</html>
